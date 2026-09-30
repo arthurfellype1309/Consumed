@@ -1,222 +1,318 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="Encontre médicos e psicólogos com horários livres, mesmo sem saber por onde começar.">
     <title>Consumed</title>
-    <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Newsreader:opsz,wght@6..72,200..800&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <header>
-        <div class="logo">
-            <a href="index.html"><img src="imagens/logo.png" alt=""></a>
+    <header class="top" id="hd">
+        <div class="in">
+            <a class="logo" href="index.html"><img src="imagens/logo.png" alt="Consumed, página inicial"></a>
+            <nav aria-label="Principal">
+                <a class="l" href="#Inicio">Início</a>
+                <a class="l" href="#Agendamentos">Agendamentos</a>
+                <a class="l" href="#Servicos">Serviços</a>
+                <a class="l" href="#Profissionais">Profissionais</a>
+                <a class="l" href="#Sobre">Sobre</a>
+                <a class="l" href="#Contato">Contato</a>
+                <a class="btn nv" href="#">Entrar</a>
+            </nav>
         </div>
-        <nav>
-            <div class="paginas">
-                <a href="index.html">Início</a>
-                <a href="#">Agendamentos</a>
-                <a href="#">Serviços</a>
-                <a href="#">Profissionais</a>
-                <a href="#">Sobre</a>
-                <a href="#">Contato</a>
-            </div>
-        </nav>
     </header>
 
     <main>
-        <section>
-            <div class="texto1">
-                <h2>Encontre o cuidado certo, mesmo sem saber por onde começar.</h2>
-                <p>Médicos e psicólogos com horários livres, em um só lugar.</p>
+
+        <section class="hero" aria-labelledby="h1">
+            <canvas id="sh" aria-hidden="true"></canvas>
+            <div class="wrap">
                 <div>
-                    <button></button>
-                    <a href="#">Prefiro buscar direto</a>
+                    <h1 id="h1">Encontre o cuidado certo, mesmo sem saber por onde começar.</h1>
+                    <p class="lead">Médicos e psicólogos com horários livres, em um só lugar.</p>
+                    <div class="cta">
+                        <a class="btn" href="#comecar">Começar</a>
+                        <a class="t" href="#buscar">Prefiro buscar direto</a>
+                    </div>
                 </div>
-            </div>
-            <div class="imagem">
-                <img src="https://medicinasa.com.br/wp-content/uploads/2024/10/plataforma-digital-healthcare-4.jpg"
-                    alt="">
+                
             </div>
         </section>
 
 
-        <section>
-            <div>
-                <h2>O que está acontecendo?</h2>
-                <p>Escolha a situação mais próxima. Nós sugerimos por onde começar.</p>
+        <section class="s c" id="comecar" aria-labelledby="t-comecar">
+            <div class="wrap">
+                <h2 id="t-comecar">O que está acontecendo?</h2>
+                <p class="sub">Escolha a situação mais próxima. Nós sugerimos por onde começar.</p>
 
-                <div>
-                    <button>Sintoma ou dor no corpo</button>
-                    <button>Ansiedade, tristeza ou estresse</button>
-                    <button>Saúde de uma criança</button>
-                    <button>Check-up de rotina</button>
+                <div class="chips" id="chips" role="group" aria-label="Situações">
+                    <button type="button" class="chip" aria-pressed="false" aria-controls="sug-0">Sintoma ou dor no corpo</button>
+                    <button type="button" class="chip" aria-pressed="true" aria-controls="sug-1">Ansiedade, tristeza ou estresse</button>
+                    <button type="button" class="chip" aria-pressed="false" aria-controls="sug-2">Saúde de uma criança</button>
+                    <button type="button" class="chip" aria-pressed="false" aria-controls="sug-3">Check-up de rotina</button>
                 </div>
 
-                <div>
-                    <div>
+                <div id="out" aria-live="polite">
+
+                    <div class="fade" id="sug-0" hidden>
                         <h3>Sugestão: Clínica geral</h3>
-                        <p>O clínico avalia e encaminha, se preciso.</p>
-                        <article>
-                            <div class="av">HD</div>
-                            <h3>Dra. Helena Duarte</h3>
-                            <p>Médico(a), Clínica geral</p>
-                            <ul>
-                                <li>Presencial</li>
-                                <li>Online</li>
-                                <li>R$ 120</li>
-                            </ul>
-                            <p>Próximo horário: hoje, 16:30</p>
-                            <a href="#"><button>Ver horários</button></a>
-                        </article>
+                        <p class="why">O clínico avalia e encaminha, se preciso.</p>
+                        <div class="pair">
+                            <article class="pro m">
+                                <div class="av" aria-hidden="true">HD</div>
+                                <h3>Dra. Helena Duarte</h3>
+                                <p class="esp">Médico(a), Clínica geral</p>
+                                <ul class="tags">
+                                    <li>Presencial</li>
+                                    <li>Online</li>
+                                    <li>R$ 120</li>
+                                </ul>
+                                <p class="slot">Próximo horário: hoje, 16:30</p>
+                                <a class="btn ghost" href="#">Ver horários</a>
+                            </article>
+                            <article class="pro m">
+                                <div class="av" aria-hidden="true">OP</div>
+                                <h3>Dr. Otávio Pires</h3>
+                                <p class="esp">Médico(a), Clínica geral</p>
+                                <ul class="tags">
+                                    <li>Online</li>
+                                    <li>R$ 90</li>
+                                    <li>Horário à noite</li>
+                                </ul>
+                                <p class="slot">Próximo horário: amanhã, 19:00</p>
+                                <a class="btn ghost" href="#">Ver horários</a>
+                            </article>
+                        </div>
                     </div>
 
-                    <div>
+                    <div class="fade" id="sug-1">
                         <h3>Sugestão: Psicologia clínica</h3>
-                        <p>Um psicólogo escuta, avalia e define o acompanhamento.</p>
-                        <article>
-                            <div class="av">OP</div>
-                            <h3>Dr. Otávio Pires</h3>
-                            <p>Médico(a), Clínica geral</p>
-                            <ul>
-                                <li>Online</li>
-                                <li>R$ 90</li>
-                                <li>Horário à noite</li>
-                            </ul>
-                            <p>Próximo horário: amanhã, 19:00</p>
-                            <a href="#"><button>Ver horários</button></a>
-                        </article>
+                        <p class="why">Um psicólogo escuta, avalia e define o acompanhamento.</p>
+                        <div class="pair">
+                            <article class="pro p">
+                                <div class="av" aria-hidden="true">CM</div>
+                                <h3>Caio Meireles</h3>
+                                <p class="esp">Psicólogo(a), Psicologia clínica</p>
+                                <ul class="tags">
+                                    <li>Online</li>
+                                    <li>Valor social R$ 50</li>
+                                </ul>
+                                <p class="slot">Próximo horário: amanhã, 09:00</p>
+                                <a class="btn ghost" href="#">Ver horários</a>
+                            </article>
+                            <article class="pro p">
+                                <div class="av" aria-hidden="true">BT</div>
+                                <h3>Bianca Torres</h3>
+                                <p class="esp">Psicólogo(a), Psicologia infantil</p>
+                                <ul class="tags">
+                                    <li>Presencial</li>
+                                    <li>Atende em Libras</li>
+                                    <li>R$ 70</li>
+                                </ul>
+                                <p class="slot">Próximo horário: quinta, 15:00</p>
+                                <a class="btn ghost" href="#">Ver horários</a>
+                            </article>
+                        </div>
                     </div>
 
-                    <div>
+                    <div class="fade" id="sug-2" hidden>
                         <h3>Sugestão: Pediatria e psicologia infantil</h3>
-                        <p>Para crescimento, rotina, comportamento e aprendizagem.
-                        <p>
-                        <article>
-                            <div class="av">CM</div>
-                            <h3>Caio Meireles</h3>
-                            <p>Psicólogo(a), Psicologia clínica</p>
-                            <ul>
-                                <li>Online</li>
-                                <li>Valor social R$ 50</li>
-                            </ul>
-                            <p>Próximo horário: amanhã, 09:00</p>
-                            <a href="#"><button>Ver horários</button></a>
-                        </article>
+                        <p class="why">Para crescimento, rotina, comportamento e aprendizagem.</p>
+                        <div class="pair">
+                            <article class="pro m">
+                                <div class="av" aria-hidden="true">ML</div>
+                                <h3>Dra. Marina Lacerda</h3>
+                                <p class="esp">Médico(a), Pediatria</p>
+                                <ul class="tags">
+                                    <li>Presencial</li>
+                                    <li>Local acessível</li>
+                                    <li>R$ 150</li>
+                                </ul>
+                                <p class="slot">Próximo horário: sexta, 10:00</p>
+                                <a class="btn ghost" href="#">Ver horários</a>
+                            </article>
+                            <article class="pro p">
+                                <div class="av" aria-hidden="true">BT</div>
+                                <h3>Bianca Torres</h3>
+                                <p class="esp">Psicólogo(a), Psicologia infantil</p>
+                                <ul class="tags">
+                                    <li>Presencial</li>
+                                    <li>Atende em Libras</li>
+                                    <li>R$ 70</li>
+                                </ul>
+                                <p class="slot">Próximo horário: quinta, 15:00</p>
+                                <a class="btn ghost" href="#">Ver horários</a>
+                            </article>
+                        </div>
                     </div>
-                    <div>
+
+                    <div class="fade" id="sug-3" hidden>
                         <h3>Sugestão: Clínica geral</h3>
-                        <p>Consulta preventiva, sem sintoma específico.
-                        <p>
-                        <article>
-                            <div class="av">BT</div>
-                            <h3>Bianca Torres</h3>
-                            <p>Psicólogo(a), Psicologia infantil</p>
-                            <ul>
-                                <li>Presencial</li>
-                                <li>Atende em Libras</li>
-                                <li>R$ 70</li>
-                            </ul>
-                            <p>Próximo horário: quinta, 15:00</p>
-                            <a href="#"><button>Ver horários</button></a>
-                        </article>
+                        <p class="why">Consulta preventiva, sem sintoma específico.</p>
+                        <div class="pair">
+                            <article class="pro m">
+                                <div class="av" aria-hidden="true">HD</div>
+                                <h3>Dra. Helena Duarte</h3>
+                                <p class="esp">Médico(a), Clínica geral</p>
+                                <ul class="tags">
+                                    <li>Presencial</li>
+                                    <li>Online</li>
+                                    <li>R$ 120</li>
+                                </ul>
+                                <p class="slot">Próximo horário: hoje, 16:30</p>
+                                <a class="btn ghost" href="#">Ver horários</a>
+                            </article>
+                            <article class="pro m">
+                                <div class="av" aria-hidden="true">OP</div>
+                                <h3>Dr. Otávio Pires</h3>
+                                <p class="esp">Médico(a), Clínica geral</p>
+                                <ul class="tags">
+                                    <li>Online</li>
+                                    <li>R$ 90</li>
+                                    <li>Horário à noite</li>
+                                </ul>
+                                <p class="slot">Próximo horário: amanhã, 19:00</p>
+                                <a class="btn ghost" href="#">Ver horários</a>
+                            </article>
+                        </div>
                     </div>
 
                 </div>
+
+                <p class="sub">A sugestão orienta a busca e não substitui uma avaliação profissional.</p>
             </div>
         </section>
 
 
+        <section class="s c" id="buscar" aria-labelledby="t-buscar">
+            <div class="wrap">
+                <h2 id="t-buscar">Prefere buscar direto?</h2>
+                <form class="search" method="get" action="#profissionais">
+                    <div class="fields">
+                        <label for="profissional">Quem você procura
+                            <select id="profissional" name="profissional">
+                                <option value="">Médico ou psicólogo</option>
+                                <option value="medico">Médico</option>
+                                <option value="psicologo">Psicólogo</option>
+                            </select>
+                        </label>
 
+                        <label for="atendimento">Como quer ser atendido
+                            <select id="atendimento" name="atendimento">
+                                <option value="">Online ou presencial</option>
+                                <option value="online">Online</option>
+                                <option value="presencial">Presencial</option>
+                            </select>
+                        </label>
 
-        <section>
-            <div>
-                <h2>Prefere buscar direto?</h2>
-                <form action="">
-                    <label for="profissional">Quem você procura</label>
+                        <button class="btn" type="submit">Buscar</button>
+                    </div>
 
-                    <select id="profissional" name="profissional">
-                        <option value="">Médico ou psicólogo</option>
-                        <option value="medico">Médico</option>
-                        <option value="psicologo">Psicólogo</option>
-                    </select>
-
-                    <label for="atendimento">Como quer ser atendido</label>
-
-                    <select id="atendimento" name="atendimento">
-                        <option value="">Online ou presencial</option>
-                        <option value="online">Online</option>
-                        <option value="presencial">Presencial</option>
-                    </select>
-                    <button>Buscar</button>
-                    <summary> ::marker Filtros de acesso</summary>
-                    <button>Valor social</button>
-                    <button>Atende em Libras</button>
-                    <button>Local acessível</button>
-                    <button>Horário à noite</button>
+                    <details>
+                        <summary>Filtros de acesso</summary>
+                        <div class="access">
+                            <button type="button" class="tog" aria-pressed="false">Valor social</button>
+                            <button type="button" class="tog" aria-pressed="false">Atende em Libras</button>
+                            <button type="button" class="tog" aria-pressed="false">Local acessível</button>
+                            <button type="button" class="tog" aria-pressed="false">Horário à noite</button>
+                        </div>
+                    </details>
                 </form>
             </div>
         </section>
 
 
+        <section class="s c" id="profissionais" aria-labelledby="t-prof">
+            <div class="wrap">
+                <h2 id="t-prof">Com horário livre esta semana</h2>
+                <p class="sub">Verde indica médicos e azul indica psicólogos, em todas as telas.</p>
+                <div class="list" id="feat">
+                    <article class="pro m">
+                        <div class="av" aria-hidden="true">HD</div>
+                        <h3>Dra. Helena Duarte</h3>
+                        <p class="esp">Médico(a), Clínica geral</p>
+                        <ul class="tags">
+                            <li>Presencial</li>
+                            <li>Online</li>
+                            <li>R$ 120</li>
+                        </ul>
+                        <p class="slot">Próximo horário: hoje, 16:30</p>
+                        <a class="btn ghost" href="#">Ver horários</a>
+                    </article>
+                    <article class="pro p">
+                        <div class="av" aria-hidden="true">CM</div>
+                        <h3>Caio Meireles</h3>
+                        <p class="esp">Psicólogo(a), Psicologia clínica</p>
+                        <ul class="tags">
+                            <li>Online</li>
+                            <li>Valor social R$ 50</li>
+                        </ul>
+                        <p class="slot">Próximo horário: amanhã, 09:00</p>
+                        <a class="btn ghost" href="#">Ver horários</a>
+                    </article>
+                    <article class="pro m">
+                        <div class="av" aria-hidden="true">ML</div>
+                        <h3>Dra. Marina Lacerda</h3>
+                        <p class="esp">Médico(a), Pediatria</p>
+                        <ul class="tags">
+                            <li>Presencial</li>
+                            <li>Local acessível</li>
+                            <li>R$ 150</li>
+                        </ul>
+                        <p class="slot">Próximo horário: sexta, 10:00</p>
+                        <a class="btn ghost" href="#">Ver horários</a>
+                    </article>
+                </div>
+            </div>
+        </section>
 
-        <section>
-            <h2>Com horário livre esta semana</h2>
-            <p>Verde indica médicos e azul indica psicólogos, em todas as tel</p>
 
-
-
+        <section class="s c" id="como" aria-labelledby="t-como">
+            <div class="wrap">
+                <h2 id="t-como">Como funciona</h2>
+                <div class="steps">
+                    <div class="step">
+                        <b>1</b>
+                        <h3>Escolha</h3>
+                        <p>Use a sugestão ou os filtros para encontrar quem atende o que você precisa.</p>
+                    </div>
+                    <div class="step">
+                        <b>2</b>
+                        <h3>Reserve</h3>
+                        <p>Só aparecem horários livres, então a agenda nunca conflita.</p>
+                    </div>
+                    <div class="step">
+                        <b>3</b>
+                        <h3>Acompanhe</h3>
+                        <p>Veja, remarque ou cancele em Minhas consultas.</p>
+                    </div>
+                </div>
+            </div>
         </section>
 
 
-
-
-        <section>
-            <h2>Como funciona</h2>
-            <div>
-                <p>1</p>
-                <strong>
-                    <p>Escolha</p>
-                </strong>
-                <p>Use a sugestão ou os filtros para encontrar quem atende o que você precisa.</p>
+        <div class="wrap">
+            <div class="crisis" role="note">
+                <strong>Em crise emocional? Ligue 188 (CVV, 24 horas, gratuito).</strong>
+                <span>Este site não atende emergências. Em risco de vida, ligue 192 (SAMU).</span>
             </div>
-            <div>
-                <p>2</p>
-                <strong>
-                    <p>Reserve</p>
-                </strong>
-                <p>Só aparecem horários livres, então a agenda nunca conflita.</p>
-            </div>
-            <div>
-                <p>3</p>
-                <strong>
-                    <p>Acompanhe</p>
-                </strong>
-                <p>Veja, remarque ou cancele em Minhas consultas.</p>
-            </div>
-        </section>
-
-
-
-        <section>
-            <div>
-                <strong>
-                    <p>Em crise emocional? Ligue 188 (CVV, 24 horas, gratuito).</p>
-                </strong>
-                <p>Este site não atende emergências. Em risco de vida, ligue 192 (SAMU).</p>
-            </div>
-        </section>
+        </div>
 
     </main>
 
-    <footer></footer>
+    <div class="wrap">
+        <footer>
+            <span>Consumed é um projeto acadêmico alinhado à ODS 3, Saúde e Bem-estar.</span>
+            <span>Todos os profissionais e dados desta página são fictícios.</span>
+        </footer>
+    </div>
 
 </body>
 
