@@ -1,27 +1,223 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consumed</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Newsreader:opsz,wght@6..72,200..800&display=swap"
+        rel="stylesheet">
 </head>
+
 <body>
 
     <header>
-
+        <div class="logo">
+            <a href="index.html"><img src="imagens/logo.png" alt=""></a>
+        </div>
+        <nav>
+            <div class="paginas">
+                <a href="index.html">Início</a>
+                <a href="#">Agendamentos</a>
+                <a href="#">Serviços</a>
+                <a href="#">Profissionais</a>
+                <a href="#">Sobre</a>
+                <a href="#">Contato</a>
+            </div>
+        </nav>
     </header>
 
-    <nav>
-
-    </nav>
-
     <main>
+        <section>
+            <div class="texto1">
+                <h2>Encontre o cuidado certo, mesmo sem saber por onde começar.</h2>
+                <p>Médicos e psicólogos com horários livres, em um só lugar.</p>
+                <div>
+                    <button></button>
+                    <a href="#">Prefiro buscar direto</a>
+                </div>
+            </div>
+            <div class="imagem">
+                <img src="https://medicinasa.com.br/wp-content/uploads/2024/10/plataforma-digital-healthcare-4.jpg"
+                    alt="">
+            </div>
+        </section>
+
+
+        <section>
+            <div>
+                <h2>O que está acontecendo?</h2>
+                <p>Escolha a situação mais próxima. Nós sugerimos por onde começar.</p>
+
+                <div>
+                    <button>Sintoma ou dor no corpo</button>
+                    <button>Ansiedade, tristeza ou estresse</button>
+                    <button>Saúde de uma criança</button>
+                    <button>Check-up de rotina</button>
+                </div>
+
+                <div>
+                    <div>
+                        <h3>Sugestão: Clínica geral</h3>
+                        <p>O clínico avalia e encaminha, se preciso.</p>
+                        <article>
+                            <div class="av">HD</div>
+                            <h3>Dra. Helena Duarte</h3>
+                            <p>Médico(a), Clínica geral</p>
+                            <ul>
+                                <li>Presencial</li>
+                                <li>Online</li>
+                                <li>R$ 120</li>
+                            </ul>
+                            <p>Próximo horário: hoje, 16:30</p>
+                            <a href="#"><button>Ver horários</button></a>
+                        </article>
+                    </div>
+
+                    <div>
+                        <h3>Sugestão: Psicologia clínica</h3>
+                        <p>Um psicólogo escuta, avalia e define o acompanhamento.</p>
+                        <article>
+                            <div class="av">OP</div>
+                            <h3>Dr. Otávio Pires</h3>
+                            <p>Médico(a), Clínica geral</p>
+                            <ul>
+                                <li>Online</li>
+                                <li>R$ 90</li>
+                                <li>Horário à noite</li>
+                            </ul>
+                            <p>Próximo horário: amanhã, 19:00</p>
+                            <a href="#"><button>Ver horários</button></a>
+                        </article>
+                    </div>
+
+                    <div>
+                        <h3>Sugestão: Pediatria e psicologia infantil</h3>
+                        <p>Para crescimento, rotina, comportamento e aprendizagem.
+                        <p>
+                        <article>
+                            <div class="av">CM</div>
+                            <h3>Caio Meireles</h3>
+                            <p>Psicólogo(a), Psicologia clínica</p>
+                            <ul>
+                                <li>Online</li>
+                                <li>Valor social R$ 50</li>
+                            </ul>
+                            <p>Próximo horário: amanhã, 09:00</p>
+                            <a href="#"><button>Ver horários</button></a>
+                        </article>
+                    </div>
+                    <div>
+                        <h3>Sugestão: Clínica geral</h3>
+                        <p>Consulta preventiva, sem sintoma específico.
+                        <p>
+                        <article>
+                            <div class="av">BT</div>
+                            <h3>Bianca Torres</h3>
+                            <p>Psicólogo(a), Psicologia infantil</p>
+                            <ul>
+                                <li>Presencial</li>
+                                <li>Atende em Libras</li>
+                                <li>R$ 70</li>
+                            </ul>
+                            <p>Próximo horário: quinta, 15:00</p>
+                            <a href="#"><button>Ver horários</button></a>
+                        </article>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+
+
+
+        <section>
+            <div>
+                <h2>Prefere buscar direto?</h2>
+                <form action="">
+                    <label for="profissional">Quem você procura</label>
+
+                    <select id="profissional" name="profissional">
+                        <option value="">Médico ou psicólogo</option>
+                        <option value="medico">Médico</option>
+                        <option value="psicologo">Psicólogo</option>
+                    </select>
+
+                    <label for="atendimento">Como quer ser atendido</label>
+
+                    <select id="atendimento" name="atendimento">
+                        <option value="">Online ou presencial</option>
+                        <option value="online">Online</option>
+                        <option value="presencial">Presencial</option>
+                    </select>
+                    <button>Buscar</button>
+                    <summary> ::marker Filtros de acesso</summary>
+                    <button>Valor social</button>
+                    <button>Atende em Libras</button>
+                    <button>Local acessível</button>
+                    <button>Horário à noite</button>
+                </form>
+            </div>
+        </section>
+
+
+
+        <section>
+            <h2>Com horário livre esta semana</h2>
+            <p>Verde indica médicos e azul indica psicólogos, em todas as tel</p>
+
+
+
+        </section>
+
+
+
+
+        <section>
+            <h2>Como funciona</h2>
+            <div>
+                <p>1</p>
+                <strong>
+                    <p>Escolha</p>
+                </strong>
+                <p>Use a sugestão ou os filtros para encontrar quem atende o que você precisa.</p>
+            </div>
+            <div>
+                <p>2</p>
+                <strong>
+                    <p>Reserve</p>
+                </strong>
+                <p>Só aparecem horários livres, então a agenda nunca conflita.</p>
+            </div>
+            <div>
+                <p>3</p>
+                <strong>
+                    <p>Acompanhe</p>
+                </strong>
+                <p>Veja, remarque ou cancele em Minhas consultas.</p>
+            </div>
+        </section>
+
+
+
+        <section>
+            <div>
+                <strong>
+                    <p>Em crise emocional? Ligue 188 (CVV, 24 horas, gratuito).</p>
+                </strong>
+                <p>Este site não atende emergências. Em risco de vida, ligue 192 (SAMU).</p>
+            </div>
+        </section>
 
     </main>
 
-    <footer>
-
-    </footer>
+    <footer></footer>
 
 </body>
+
 </html>
