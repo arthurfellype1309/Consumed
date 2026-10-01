@@ -32,12 +32,15 @@ document.querySelectorAll('.tog').forEach((b) => {
 const burger = document.querySelector('.burger');
 function menu(abrir) {
     hd.classList.toggle('open', abrir);
-    burger.setAttribute('aria-expanded', abrir);
+    if (burger) burger.setAttribute('aria-expanded', abrir);
 }
-burger.addEventListener('click', () => menu(!hd.classList.contains('open')));
-document.getElementById('menu').addEventListener('click', (e) => {
-    if (e.target.closest('a')) menu(false);
-});
+if (burger) burger.addEventListener('click', () => menu(!hd.classList.contains('open')));
+const navegacao = document.getElementById('menu');
+if (navegacao) {
+    navegacao.addEventListener('click', (e) => {
+        if (e.target.closest('a')) menu(false);
+    });
+}
  
 /* Abas dos profissionais */
 const abas = [...document.querySelectorAll('.tab')];
@@ -157,3 +160,4 @@ void main(){vec2 uv=gl_FragCoord.xy/r;vec2 p=uv*vec2(r.x/r.y,1.)*2.3+(m-.5)*.4;
         requestAnimationFrame(loop);
     }
 })();
+ 

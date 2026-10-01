@@ -1,147 +1,150 @@
 <!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta name="description" content="Encontre médicos e psicólogos com horários livres, mesmo sem saber por onde começar.">
-    <title>Sem nome</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <header class="top" id="hd">
-        <div class="in">
-            <a class="logo" href="index.html"><img src="imagens/logo.png" alt="Consumed, página inicial"></a>
-            <nav aria-label="Principal">
-                <a class="l" href="#inicio">Início</a>
-                <a class="l" href="agendamento.html">Agendamentos</a>
-                <a class="l" href="#servicos">Serviços</a>
-                <a class="l" href="#profissionais">Profissionais</a>
-                <a class="l" href="especialidades.html">Especialidades</a>
-                <a class="l" href="#contato">Contato</a>
-                <a class="btn nv" href="#">Entrar</a>
-            </nav>
-        </div>
-    </header>
-
-    <main>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+        <meta name="description" content="Entenda as especialidades, encontre UPA, UBS, CAPS e hospitais perto de você e conheça nossos profissionais." />
+        <title>Especialidades | ConsuMed</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="style.css" />
+    </head>
  
-        <section id="servicos">
-            <h2>Serviços</h2>
-            <p>Médicos e psicólogos com horários livres, em um só lugar.</p>
+    <body>
+        <header class="top" id="hd">
+            <div class="in">
+                <a class="logo" href="index.html">
+                    <img src="imagens/logo.png" alt="ConsuMed, página inicial" />
+                </a>
+                <nav aria-label="Principal" id="menu">
+                    <a class="l" href="index.html#inicio">Início</a>
+                    <a class="l" href="agendamento.html">Agendamentos</a>
+                    <a class="l" href="especialidades.html" aria-current="page">Especialidades</a>
+                    <a class="l" href="index.html#servicos">Serviços</a>
+                    <a class="l" href="index.html#profissionais">Profissionais</a>
+                    <a class="l" href="index.html#contato">Contato</a>
+                    <a class="user" href="#" aria-label="Entrar na sua conta">
+                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="12" cy="8" r="4" />
+                            <path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8" />
+                        </svg>
+                    </a>
+                </nav>
+                <button class="burger" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu">
+                    <span></span>
+                </button>
+            </div>
+        </header>
  
-            <article>
-                <h3>Clínica geral</h3>
-                <p>O clínico avalia e encaminha, se preciso. Também serve para consulta preventiva, sem sintoma específico.</p>
-                <p>Indicado para: sintoma ou dor no corpo e check-up de rotina.</p>
-            </article>
+        <main>
+            <section class="pagina" aria-labelledby="t-esp">
+                <div class="wrap">
+                    <h1 id="t-esp">Especialidades e rede de saúde</h1>
+                    <p class="sub">Entenda cada especialidade, encontre serviços de saúde perto de você e conheça quem atende.</p>
+                    <div class="alerta" role="note">
+                        <strong>Risco de vida? Ligue 192 (SAMU).</strong>
+                        Dor forte no peito, falta de ar, sinais de AVC (rosto caído, fraqueza em um lado do corpo, fala enrolada), convulsão, sangramento intenso ou desmaio são emergências.
+                    </div>
+                </div>
+            </section>
  
-            <article>
-                <h3>Psicologia clínica</h3>
-                <p>Um psicólogo escuta, avalia e define o acompanhamento.</p>
-                <p>Indicado para: ansiedade, tristeza ou estresse.</p>
-            </article>
+            <section class="s" id="perto" aria-labelledby="t-perto">
+                <div class="wrap">
+                    <h2 id="t-perto">Serviços de saúde perto de você</h2>
+                    <p class="sub">Pronto-socorros, UPAs, UBS, CAPS, hospitais e clínicas da região, do mais perto ao mais longe.</p>
  
-            <article>
-                <h3>Pediatria e psicologia infantil</h3>
-                <p>Para crescimento, rotina, comportamento e aprendizagem.</p>
-                <p>Indicado para: saúde de uma criança.</p>
-            </article>
+                    <div class="local-bar">
+                        <button class="btn" id="usar-local" type="button">Usar minha localização</button>
+                        <form class="local-form" id="form-local">
+                            <label for="endereco">
+                                Ou digite sua cidade ou bairro
+                                <input id="endereco" type="text" autocomplete="off" placeholder="Ex.: bairro, cidade" />
+                            </label>
+                            <button class="btn ghost" type="submit">Buscar</button>
+                        </form>
+                        <p class="aviso" id="status-local" role="status"></p>
+                        <p class="nota">Sua localização fica neste navegador e é enviada apenas ao OpenStreetMap, serviço público de mapas, para buscar os lugares próximos. Nós não a guardamos.</p>
+                    </div>
  
-            <h3>Como você pode ser atendido</h3>
-            <ul>
-                <li>Online</li>
-                <li>Presencial</li>
-            </ul>
+                    <div class="tabs" role="group" aria-label="Tipo de serviço">
+                        <button type="button" class="tab" data-cat="urgencia" aria-pressed="true">Urgência e emergência</button>
+                        <button type="button" class="tab" data-cat="ubs" aria-pressed="false">UBS e postos (SUS)</button>
+                        <button type="button" class="tab" data-cat="caps" aria-pressed="false">Saúde mental (CAPS)</button>
+                        <button type="button" class="tab" data-cat="hospital" aria-pressed="false">Hospitais</button>
+                        <button type="button" class="tab" data-cat="clinica" aria-pressed="false">Clínicas e consultórios</button>
+                    </div>
+                    <p class="ajuda" id="ajuda"></p>
+                    <ul class="consultas" id="lugares"></ul>
+                    <p class="nota" id="rodape-lugares" aria-live="polite"></p>
+                </div>
+            </section>
  
-            <h3>Filtros de acesso</h3>
-            <ul>
-                <li>Valor social</li>
-                <li>Atende em Libras</li>
-                <li>Local acessível</li>
-                <li>Horário à noite</li>
-            </ul>
+            <section class="s" id="especialidades" aria-labelledby="t-especialidades">
+                <div class="wrap">
+                    <h2 id="t-especialidades">Especialidades</h2>
+                    <p class="sub">Para que serve cada uma e quando procurar. A informação orienta e não substitui uma avaliação profissional.</p>
+                    <div class="esp-grid">
+                        <article class="esp-card e-geral">
+                            <h3>Clínica geral</h3>
+                            <p>O clínico avalia e encaminha, se preciso. Também serve para consulta preventiva, sem sintoma específico.</p>
+                            <p class="para">Indicado para: sintoma ou dor no corpo e check-up de rotina.</p>
+                        </article>
+                        <article class="esp-card e-psi">
+                            <h3>Psicologia clínica</h3>
+                            <p>Um psicólogo escuta, avalia e define o acompanhamento.</p>
+                            <p class="para">Indicado para: ansiedade, tristeza ou estresse.</p>
+                        </article>
+                        <article class="esp-card e-crianca">
+                            <h3>Pediatria e psicologia infantil</h3>
+                            <p>Para crescimento, rotina, comportamento e aprendizagem.</p>
+                            <p class="para">Indicado para: saúde de uma criança.</p>
+                        </article>
+                    </div>
+                </div>
+            </section>
  
-            <p>A sugestão orienta a busca e não substitui uma avaliação profissional.</p>
-        </section>
+            <section class="s" id="servicos" aria-labelledby="t-serv">
+                <div class="wrap">
+                    <h2 id="t-serv">Como você pode ser atendido</h2>
+                    <p class="sub">O que significa cada opção que aparece nos perfis dos profissionais.</p>
+                    <div class="info-grid">
+                        <article class="tile"><h3>Online</h3><p>Consulta por vídeo, sem deslocamento. Boa para acompanhamento e retornos, mas não substitui o exame físico quando ele é necessário.</p></article>
+                        <article class="tile"><h3>Presencial</h3><p>Consulta no consultório, com exame físico e, quando houver, exames no local.</p></article>
+                        <article class="tile"><h3>Valor social</h3><p>Preço reduzido para quem tem menos renda. Cada profissional define quantas vagas oferece.</p></article>
+                        <article class="tile"><h3>Atende em Libras</h3><p>Atendimento direto na Língua Brasileira de Sinais, sem depender de intérprete.</p></article>
+                        <article class="tile"><h3>Local acessível</h3><p>Consultório com acesso para pessoas com mobilidade reduzida.</p></article>
+                        <article class="tile"><h3>Horário à noite</h3><p>Consultas depois do expediente comercial, para quem trabalha ou estuda de dia.</p></article>
+                    </div>
+                </div>
+            </section>
  
-        <section id="profissionais">
-            <h2>Profissionais</h2>
-            <p>Médicos e psicólogos com horário livre esta semana.</p>
+            <section class="s" id="profissionais" aria-labelledby="t-prof">
+                <div class="wrap">
+                    <h2 id="t-prof">Quem atende</h2>
+                    <p class="sub" id="aviso-prof" aria-live="polite"></p>
+                    <div class="list" id="lista"></div>
+                    <div class="crisis" role="note">
+                        <strong>Em crise emocional? Ligue 188 (CVV, 24 horas, gratuito).</strong>
+                        <span>Este site não atende emergências. Em risco de vida, ligue 192 (SAMU).</span>
+                    </div>
+                </div>
+            </section>
+        </main>
  
-            <article>
-                <h3>Dra. Helena Duarte</h3>
-                <p>Médico(a), Clínica geral</p>
-                <ul>
-                    <li>Presencial</li>
-                    <li>Online</li>
-                    <li>R$ 120</li>
-                </ul>
-                <p>Próximo horário: hoje, 16:30</p>
-            </article>
+        <footer>
+            <div class="in">
+                <span>ConsuMed é um projeto acadêmico alinhado à ODS 3, Saúde e Bem-estar.</span>
+                <span>Os profissionais e consultórios são fictícios. Os serviços de saúde vêm do OpenStreetMap.</span>
+            </div>
+        </footer>
  
-            <article>
-                <h3>Dr. Otávio Pires</h3>
-                <p>Médico(a), Clínica geral</p>
-                <ul>
-                    <li>Online</li>
-                    <li>R$ 90</li>
-                    <li>Horário à noite</li>
-                </ul>
-                <p>Próximo horário: amanhã, 19:00</p>
-            </article>
- 
-            <article>
-                <h3>Dra. Marina Lacerda</h3>
-                <p>Médico(a), Pediatria</p>
-                <ul>
-                    <li>Presencial</li>
-                    <li>Local acessível</li>
-                    <li>R$ 150</li>
-                </ul>
-                <p>Próximo horário: sexta, 10:00</p>
-            </article>
- 
-            <article>
-                <h3>Caio Meireles</h3>
-                <p>Psicólogo(a), Psicologia clínica</p>
-                <ul>
-                    <li>Online</li>
-                    <li>Valor social R$ 50</li>
-                </ul>
-                <p>Próximo horário: amanhã, 09:00</p>
-            </article>
- 
-            <article>
-                <h3>Bianca Torres</h3>
-                <p>Psicólogo(a), Psicologia infantil</p>
-                <ul>
-                    <li>Presencial</li>
-                    <li>Atende em Libras</li>
-                    <li>R$ 70</li>
-                </ul>
-                <p>Próximo horário: quinta, 15:00</p>
-            </article>
-        </section>
- 
-        <p>
-            <strong>Em crise emocional? Ligue 188 (CVV, 24 horas, gratuito).</strong><br>
-            Este site não atende emergências. Em risco de vida, ligue 192 (SAMU).
-        </p>
- 
-    </main>
-
-
-
-
-
-
-
-
-
-
-
-</body>
+        <script src="dados.js" defer></script>
+        <script src="script.js" defer></script>
+        <script src="especialidades.js" defer></script>
+    </body>
 </html>
+ 
