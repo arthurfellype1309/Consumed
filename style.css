@@ -105,7 +105,7 @@ header .in {
     gap: 24px;
 }
 .logo img {
-    width: 150px;
+    width: 110px;
     display: block;
     transition: filter 0.3s ease;
 }
@@ -734,8 +734,8 @@ footer .in {
     gap: 4px 24px;
 }
 .pagina {
-    min-height: 70vh;
-    padding: 150px 0 0;
+    min-height: 30vh;
+    padding: 250px 0 0;
 }
 .pagina h1 {
     font-size: clamp(2.2rem, 4.5vw, 3.2rem);
