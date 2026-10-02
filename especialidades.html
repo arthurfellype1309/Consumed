@@ -27,7 +27,7 @@
                     <a class="l" href="index.html#servicos">Serviços</a>
                     <a class="l" href="index.html#profissionais">Profissionais</a>
                     <a class="l" href="index.html#contato">Contato</a>
-                    <a class="user" href="#" aria-label="Entrar na sua conta">
+                    <a class="user" href="login.html" aria-label="Entrar na sua conta">
                         <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                             <circle cx="12" cy="8" r="4" />
                             <path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8" />
@@ -53,85 +53,86 @@
             </section>
  
             <section class="s" id="perto" aria-labelledby="t-perto">
-            <div class="wrap">
-                <h2 id="t-perto">Serviços de saúde perto de você</h2>
-                <p class="sub">Pronto-socorros, UPAs, UBS, CAPS, hospitais e clínicas da região, do mais perto ao mais
-                    longe.</p>
-
-                <div class="local-bar">
-                    <button class="btn" id="usar-local" type="button">Usar minha localização</button>
-                    <form class="local-form" id="form-local">
-                        <label for="endereco">
-                            Ou digite sua cidade ou bairro
-                            <input id="endereco" type="text" autocomplete="off" placeholder="Ex.: bairro, cidade" />
-                        </label>
-
-                        <label for="especialidade">
-                            Especialidade ou abordagem
-                            <select id="especialidade" name="especialidade">
-                                <option value="">Todas as especialidades</option>
-
-                                <optgroup label="Especialidades médicas">
-                                    <option value="general">Clínica geral</option>
-                                    <option value="paediatrics">Pediatria</option>
-                                    <option value="gynaecology">Ginecologia e obstetrícia</option>
-                                    <option value="cardiology">Cardiologia</option>
-                                    <option value="orthopaedics">Ortopedia e traumatologia</option>
-                                    <option value="dermatology">Dermatologia</option>
-                                    <option value="ophthalmology">Oftalmologia</option>
-                                    <option value="otolaryngology">Otorrinolaringologia</option>
-                                    <option value="neurology">Neurologia</option>
-                                    <option value="endocrinology">Endocrinologia</option>
-                                    <option value="gastroenterology">Gastroenterologia</option>
-                                    <option value="urology">Urologia</option>
-                                    <option value="psychiatry">Psiquiatria</option>
-                                    <option value="geriatrics">Geriatria</option>
-                                    <option value="oncology">Oncologia</option>
-                                    <option value="rheumatology">Reumatologia</option>
-                                    <option value="pulmonology">Pneumologia</option>
-                                    <option value="nephrology">Nefrologia</option>
-                                    <option value="surgery">Cirurgia geral</option>
-                                    <option value="allergology">Alergia e imunologia</option>
-                                </optgroup>
-
-                                <optgroup label="Psicologia: abordagens">
-                                    <option value="psico-tcc">Terapia Cognitivo-Comportamental (TCC)</option>
-                                    <option value="psico-psicanalise">Psicanálise</option>
-                                    <option value="psico-humanista">Humanista / Centrada na pessoa</option>
-                                    <option value="psico-gestalt">Gestalt-terapia</option>
-                                    <option value="psico-comportamental">Análise do Comportamento (ABA)</option>
-                                    <option value="psico-sistemica">Terapia Sistêmica e Familiar</option>
-                                    <option value="psico-casal">Terapia de Casal</option>
-                                    <option value="psico-infantil">Psicologia Infantil</option>
-                                    <option value="psico-neuro">Neuropsicologia</option>
-                                    <option value="psico-act">Terapia de Aceitação e Compromisso (ACT)</option>
-                                    <option value="psico-emdr">EMDR (trauma)</option>
-                                    <option value="psico-junguiana">Psicologia Analítica (Junguiana)</option>
-                                </optgroup>
-                            </select>
-                        </label>
-
-                        <button class="btn ghost" type="submit">Buscar</button>
-                    </form>
-                    <p class="aviso" id="status-local" role="status"></p>
-                    <p class="nota">Sua localização fica neste navegador e é enviada apenas ao OpenStreetMap, serviço
-                        público de mapas, para buscar os lugares próximos. Nós não a guardamos.</p>
+                <div class="wrap">
+                    <h2 id="t-perto">Serviços de saúde perto de você</h2>
+                    <p class="sub">Pronto-socorros, UPAs, UBS, CAPS, hospitais e clínicas da região, do mais perto ao mais
+                        longe.</p>
+ 
+                    <div class="local-bar">
+                        <button class="btn" id="usar-local" type="button">Usar minha localização</button>
+                        <form class="local-form" id="form-local">
+                            <label for="endereco">
+                                Ou digite sua cidade ou bairro
+                                <input id="endereco" type="text" list="sugestoes-local" autocomplete="off" placeholder="Ex.: bairro, cidade" />
+                                <datalist id="sugestoes-local"></datalist>
+                            </label>
+ 
+                            <label for="especialidade">
+                                Especialidade ou abordagem
+                                <select id="especialidade" name="especialidade">
+                                    <option value="">Todas as especialidades</option>
+ 
+                                    <optgroup label="Especialidades médicas">
+                                        <option value="general">Clínica geral</option>
+                                        <option value="paediatrics">Pediatria</option>
+                                        <option value="gynaecology">Ginecologia e obstetrícia</option>
+                                        <option value="cardiology">Cardiologia</option>
+                                        <option value="orthopaedics">Ortopedia e traumatologia</option>
+                                        <option value="dermatology">Dermatologia</option>
+                                        <option value="ophthalmology">Oftalmologia</option>
+                                        <option value="otolaryngology">Otorrinolaringologia</option>
+                                        <option value="neurology">Neurologia</option>
+                                        <option value="endocrinology">Endocrinologia</option>
+                                        <option value="gastroenterology">Gastroenterologia</option>
+                                        <option value="urology">Urologia</option>
+                                        <option value="psychiatry">Psiquiatria</option>
+                                        <option value="geriatrics">Geriatria</option>
+                                        <option value="oncology">Oncologia</option>
+                                        <option value="rheumatology">Reumatologia</option>
+                                        <option value="pulmonology">Pneumologia</option>
+                                        <option value="nephrology">Nefrologia</option>
+                                        <option value="surgery">Cirurgia geral</option>
+                                        <option value="allergology">Alergia e imunologia</option>
+                                    </optgroup>
+ 
+                                    <optgroup label="Psicologia: abordagens">
+                                        <option value="psico-tcc">Terapia Cognitivo-Comportamental (TCC)</option>
+                                        <option value="psico-psicanalise">Psicanálise</option>
+                                        <option value="psico-humanista">Humanista / Centrada na pessoa</option>
+                                        <option value="psico-gestalt">Gestalt-terapia</option>
+                                        <option value="psico-comportamental">Análise do Comportamento (ABA)</option>
+                                        <option value="psico-sistemica">Terapia Sistêmica e Familiar</option>
+                                        <option value="psico-casal">Terapia de Casal</option>
+                                        <option value="psico-infantil">Psicologia Infantil</option>
+                                        <option value="psico-neuro">Neuropsicologia</option>
+                                        <option value="psico-act">Terapia de Aceitação e Compromisso (ACT)</option>
+                                        <option value="psico-emdr">EMDR (trauma)</option>
+                                        <option value="psico-junguiana">Psicologia Analítica (Junguiana)</option>
+                                    </optgroup>
+                                </select>
+                            </label>
+ 
+                            <button class="btn ghost" type="submit">Buscar</button>
+                        </form>
+                        <p class="aviso" id="status-local" role="status"></p>
+                        <p class="nota">Sua localização fica neste navegador e é enviada apenas ao OpenStreetMap, serviço
+                            público de mapas, para buscar os lugares próximos. Nós não a guardamos.</p>
+                    </div>
+ 
+                    <div class="tabs" role="group" aria-label="Tipo de serviço">
+                        <button type="button" class="tab" data-cat="urgencia" aria-pressed="true">Urgência e
+                            emergência</button>
+                        <button type="button" class="tab" data-cat="ubs" aria-pressed="false">UBS e postos (SUS)</button>
+                        <button type="button" class="tab" data-cat="caps" aria-pressed="false">Saúde mental (CAPS)</button>
+                        <button type="button" class="tab" data-cat="hospital" aria-pressed="false">Hospitais</button>
+                        <button type="button" class="tab" data-cat="clinica" aria-pressed="false">Clínicas e
+                            consultórios</button>
+                    </div>
+                    <p class="ajuda" id="ajuda"></p>
+                    <ul class="consultas" id="lugares"></ul>
+                    <p class="nota" id="rodape-lugares" aria-live="polite"></p>
                 </div>
-
-                <div class="tabs" role="group" aria-label="Tipo de serviço">
-                    <button type="button" class="tab" data-cat="urgencia" aria-pressed="true">Urgência e
-                        emergência</button>
-                    <button type="button" class="tab" data-cat="ubs" aria-pressed="false">UBS e postos (SUS)</button>
-                    <button type="button" class="tab" data-cat="caps" aria-pressed="false">Saúde mental (CAPS)</button>
-                    <button type="button" class="tab" data-cat="hospital" aria-pressed="false">Hospitais</button>
-                    <button type="button" class="tab" data-cat="clinica" aria-pressed="false">Clínicas e
-                        consultórios</button>
-                </div>
-                <p class="ajuda" id="ajuda"></p>
-                <ul class="consultas" id="lugares"></ul>
-                <p class="nota" id="rodape-lugares" aria-live="polite"></p>
-            </div>
-        </section>
+            </section>
  
             <section class="s" id="especialidades" aria-labelledby="t-especialidades">
                 <div class="wrap">
@@ -168,6 +169,23 @@
                         <article class="tile"><h3>Atende em Libras</h3><p>Atendimento direto na Língua Brasileira de Sinais, sem depender de intérprete.</p></article>
                         <article class="tile"><h3>Local acessível</h3><p>Consultório com acesso para pessoas com mobilidade reduzida.</p></article>
                         <article class="tile"><h3>Horário à noite</h3><p>Consultas depois do expediente comercial, para quem trabalha ou estuda de dia.</p></article>
+                    </div>
+                </div>
+            </section>
+ 
+            <section class="s" id="prevencao" aria-labelledby="t-prev">
+                <div class="wrap">
+                    <h2 id="t-prev">Cuidados básicos de prevenção</h2>
+                    <p class="sub">Hábitos simples que ajudam no dia a dia. Eles não substituem consultas nem exames indicados por um profissional.</p>
+                    <div class="info-grid">
+                        <article class="tile"><h3>Vacinas em dia</h3><p>Confira a caderneta de vacinação. O Calendário Nacional de Vacinação é gratuito nas UBS.</p></article>
+                        <article class="tile"><h3>Alimentação</h3><p>Prefira alimentos frescos ou pouco processados, com frutas, verduras, feijão e arroz. Beba água ao longo do dia.</p></article>
+                        <article class="tile"><h3>Movimento</h3><p>Adultos devem buscar ao menos 150 minutos de atividade física moderada por semana, como caminhada rápida.</p></article>
+                        <article class="tile"><h3>Sono</h3><p>A maioria dos adultos precisa de 7 a 9 horas por noite. Horários regulares ajudam.</p></article>
+                        <article class="tile"><h3>Mãos e dengue</h3><p>Lave as mãos com água e sabão. Elimine água parada em pratos, calhas e pneus, onde o mosquito da dengue se cria.</p></article>
+                        <article class="tile"><h3>Sol, tabaco e álcool</h3><p>Use protetor solar e evite o sol forte do meio do dia. Evite cigarro e limite a bebida alcoólica.</p></article>
+                        <article class="tile"><h3>Saúde mental</h3><p>Mantenha uma rotina, converse com alguém de confiança e peça ajuda cedo. O CVV atende pelo 188, 24 horas.</p></article>
+                        <article class="tile"><h3>Consultas de rotina</h3><p>Procure a UBS ou um clínico para check-up e exames conforme sua idade. Não use remédio sem orientação.</p></article>
                     </div>
                 </div>
             </section>

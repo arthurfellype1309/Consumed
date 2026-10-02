@@ -23,7 +23,43 @@
            ajuda: 'Clínicas e consultórios, públicos ou particulares, atendem consultas e exames agendados.',
        },
    };
-   const estado = { lat: null, lon: null, categoria: 'urgencia', lugares: [], situacao: 'inicio' };
+   const estado = {
+       lat: null,
+       lon: null,
+       categoria: 'urgencia',
+       lugares: [],
+       situacao: 'inicio',
+       especialidade: '',
+       sugestoes: {},
+   };
+    
+   /* Especialidades: trecho do nome em português (a etiqueta healthcare:speciality do OpenStreetMap é comparada pela chave) */
+   const ESPECIALIDADES = {
+       general: /cl[ií]nica geral|generalista/i,
+       paediatrics: /pediatr/i,
+       gynaecology: /ginecolog|obstetr|maternidade/i,
+       cardiology: /cardio/i,
+       orthopaedics: /ortoped|traumat/i,
+       dermatology: /dermat/i,
+       ophthalmology: /oftalm|olhos/i,
+       otolaryngology: /otorrino/i,
+       neurology: /neuro/i,
+       endocrinology: /endocrin/i,
+       gastroenterology: /gastro/i,
+       urology: /urolog/i,
+       psychiatry: /psiquiatr/i,
+       geriatrics: /geriatr/i,
+       oncology: /oncolog|c[aâ]ncer/i,
+       rheumatology: /reumat/i,
+       pulmonology: /pneumo|pulm/i,
+       nephrology: /nefro|renal/i,
+       surgery: /cirurg/i,
+       allergology: /alergi|imunolog/i,
+   };
+   CATEGORIAS.todas = {
+       maps: 'clínica',
+       ajuda: 'Serviços da região que mencionam a especialidade escolhida. Confirme por telefone se o atendimento está disponível.',
+   };
    const el = (id) => document.getElementById(id);
     
    function distanciaKm(lat1, lon1, lat2, lon2) {
@@ -78,6 +114,7 @@
                    publico: ehPublico(t),
                    endereco: [t['addr:street'], t['addr:housenumber']].filter(Boolean).join(', '),
                    telefone: t.phone || t['contact:phone'] || '',
+                   especialidades: `${t['healthcare:speciality'] || ''} ${t.name || ''}`,
                    km: distanciaKm(lat, lon, la, lo),
                };
            })
@@ -94,6 +131,12 @@
        const busca = encodeURIComponent(CATEGORIAS[estado.categoria].maps);
        const base = `https://www.google.com/maps/search/${busca}`;
        return estado.lat == null ? base : `${base}/@${estado.lat},${estado.lon},14z`;
+   }
+    
+   function correspondeEspecialidade(l) {
+       const chave = estado.especialidade;
+       if (!chave || !ESPECIALIDADES[chave]) return true;
+       return l.especialidades.includes(chave) || ESPECIALIDADES[chave].test(l.especialidades);
    }
     
    function desenharLugares() {
@@ -117,7 +160,10 @@
            nota.innerHTML = `Não foi possível consultar o mapa agora. ${mapas}.`;
            return;
        }
-       const itens = estado.lugares.filter((l) => l.categoria === estado.categoria).slice(0, 8);
+       const itens = estado.lugares
+           .filter(correspondeEspecialidade)
+           .filter((l) => estado.categoria === 'todas' || l.categoria === estado.categoria)
+           .slice(0, 8);
        lista.innerHTML = itens
            .map((l) => {
                const tel = l.telefone.replace(/[^\d+]/g, '');
@@ -151,10 +197,17 @@
            p,
            km: estado.lat != null && p.local ? distanciaKm(estado.lat, estado.lon, p.local.lat, p.local.lon) : null,
        }));
-       itens.sort((a, b) => (a.km ?? Infinity) - (b.km ?? Infinity));
+       const casa = (p) => (estado.especialidade && p.chaves.includes(estado.especialidade) ? 0 : 1);
+       itens.sort((a, b) => casa(a.p) - casa(b.p) || (a.km ?? Infinity) - (b.km ?? Infinity));
        el('lista').innerHTML = itens
            .map(({ p, km }) =>
-               cartaoProfissional(p, 'Agendar', `agendamento.html?profissional=${p.slug}`, '', infoLocal(p, km)),
+               cartaoProfissional(
+                   p,
+                   'Agendar',
+                   `agendamento.html?profissional=${p.slug}`,
+                   casa(p) === 0 ? ' destaque' : '',
+                   infoLocal(p, km),
+               ),
            )
            .join('');
        const perto = Math.min(...itens.map((i) => i.km ?? Infinity));
@@ -196,7 +249,17 @@
    el('form-local').addEventListener('submit', async (e) => {
        e.preventDefault();
        const texto = el('endereco').value.trim();
-       if (!texto) return;
+       escolherEspecialidade(el('especialidade').value);
+       if (!texto) {
+           if (estado.lat == null) mostrarStatus('Informe sua cidade ou bairro, ou use sua localização.', 'erro');
+           else definirLocal(estado.lat, estado.lon, 'o mesmo local');
+           return;
+       }
+       const sugerido = estado.sugestoes[texto];
+       if (sugerido) {
+           definirLocal(sugerido.lat, sugerido.lon, texto);
+           return;
+       }
        mostrarStatus('Procurando…', '');
        try {
            const url = 'https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=br&q=';
@@ -211,6 +274,31 @@
        }
    });
     
+   function escolherEspecialidade(valor) {
+       estado.especialidade = valor;
+       if (valor) estado.categoria = 'todas';
+       else if (estado.categoria === 'todas') estado.categoria = 'urgencia';
+   }
+    
+   /* Preenchimento automático do local: sugestões vindas do backend (/api/lugares) */
+   let espera;
+   el('endereco').addEventListener('input', (e) => {
+       clearTimeout(espera);
+       const q = e.target.value.trim();
+       if (q.length < 3) return;
+       espera = setTimeout(async () => {
+           const lista = await api(`/api/lugares?q=${encodeURIComponent(q)}`).catch(() => []);
+           estado.sugestoes = Object.fromEntries(lista.map((s) => [s.rotulo, s]));
+           el('sugestoes-local').innerHTML = lista.map((s) => `<option value="${esc(s.rotulo)}"></option>`).join('');
+       }, 350);
+   });
+    
+   el('especialidade').addEventListener('change', () => {
+       escolherEspecialidade(el('especialidade').value);
+       desenharLugares();
+       desenharProfissionais();
+   });
+    
    document.querySelectorAll('[data-cat]').forEach((b) =>
        b.addEventListener('click', () => {
            estado.categoria = b.dataset.cat;
@@ -218,6 +306,8 @@
        }),
    );
     
-   desenharLugares();
-   desenharProfissionais();
+   carregarProfissionais().then(() => {
+       desenharLugares();
+       desenharProfissionais();
+   });
     

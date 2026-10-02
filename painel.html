@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+        <meta name="description" content="Veja as consultas marcadas e ajuste seus dias e horários de atendimento." />
+        <title>Painel do profissional | ConsuMed</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="style.css">
+    </head>
+ 
+    <body>
+        <header class="top" id="hd">
+            <div class="in">
+                <a class="logo" href="index.html">
+                    <img src="imagens/logo_nome.png" alt="ConsuMed, página inicial" />
+                </a>
+                <nav aria-label="Principal" id="menu">
+                    <a class="l" href="index.html#inicio">Início</a>
+                    <a class="l" href="agendamento.html">Agendamentos</a>
+                    <a class="l" href="especialidades.html">Especialidades</a>
+                    <a class="l" href="index.html#servicos">Serviços</a>
+                    <a class="l" href="index.html#profissionais">Profissionais</a>
+                    <a class="l" href="index.html#contato">Contato</a>
+                    <a class="user" href="login.html" aria-label="Entrar na sua conta">
+                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="12" cy="8" r="4" />
+                            <path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8" />
+                        </svg>
+                    </a>
+                </nav>
+                <button class="burger" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu">
+                    <span></span>
+                </button>
+            </div>
+        </header>
+ 
+        <main>
+            <section class="pagina" aria-labelledby="t-painel">
+                <div class="wrap">
+                    <h1 id="t-painel">Painel do profissional</h1>
+                    <p class="sub" id="ola"></p>
+                    <div class="agenda">
+                        <div class="passos">
+                            <section class="passo" aria-labelledby="t-consultas">
+                                <h2 id="t-consultas">Próximas consultas</h2>
+                                <ul class="consultas" id="consultas"></ul>
+                                <p class="dica" id="sem-consultas" hidden>Nenhuma consulta marcada por enquanto.</p>
+                            </section>
+                        </div>
+                        <aside class="resumo" aria-labelledby="t-agenda">
+                            <h2 id="t-agenda">Minha agenda</h2>
+                            <form id="form-agenda">
+                                <fieldset class="dias-semana-caixa">
+                                    <legend>Dias de atendimento</legend>
+                                    <div class="dias-semana" id="dias-semana"></div>
+                                </fieldset>
+                                <fieldset class="dias-semana-caixa">
+                                    <legend>Horários (clique para remover)</legend>
+                                    <div class="horas" id="horarios"></div>
+                                    <div class="novo-horario">
+                                        <input id="novo-horario" type="time" aria-label="Novo horário" />
+                                        <button class="btn ghost" id="adicionar" type="button">Adicionar</button>
+                                    </div>
+                                </fieldset>
+                                <button class="btn" type="submit">Salvar agenda</button>
+                            </form>
+                            <p class="aviso" id="msg" role="status"></p>
+                            <p class="nota">As consultas já marcadas não são apagadas ao mudar a agenda.</p>
+                        </aside>
+                    </div>
+                </div>
+            </section>
+        </main>
+ 
+        <footer>
+            <div class="in">
+                <span>ConsuMed é um projeto acadêmico alinhado à ODS 3, Saúde e Bem-estar.</span>
+                <span>Todos os profissionais e dados desta página são fictícios.</span>
+            </div>
+        </footer>
+ 
+        <script src="dados.js" defer></script>
+        <script src="script.js" defer></script>
+        <script src="painel.js" defer></script>
+    </body>
+</html>
+ 

@@ -161,3 +161,25 @@ void main(){vec2 uv=gl_FragCoord.xy/r;vec2 p=uv*vec2(r.x/r.y,1.)*2.3+(m-.5)*.4;
     }
 })();
  
+/* Sessão: ícone de conta, link do painel (profissionais) e botão Sair */
+const sessao = fetch('/api/eu')
+    .then((r) => r.json())
+    .catch(() => ({ logado: false }));
+sessao.then((s) => {
+    const icone = document.querySelector('.user');
+    if (!icone || !s.logado) return;
+    const profissional = s.papel === 'profissional';
+    icone.href = profissional ? 'painel.html' : 'agendamento.html';
+    icone.title = s.nome;
+    icone.setAttribute('aria-label', `Conta de ${s.nome}`);
+    if (profissional) {
+        const atual = location.pathname.endsWith('painel.html') ? ' aria-current="page"' : '';
+        icone.insertAdjacentHTML('beforebegin', `<a class="l" href="painel.html"${atual}>Painel</a>`);
+    }
+    icone.insertAdjacentHTML('afterend', '<button class="sair" type="button">Sair</button>');
+    document.querySelector('.sair').addEventListener('click', async () => {
+        await fetch('/api/logout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' });
+        location.href = 'index.html';
+    });
+});
+ 

@@ -1,16 +1,27 @@
-/* Agendamentos: escolha de profissional, dia e horário com backend Python.
-   As consultas ficam no banco de dados SQLite via API Flask. */
-
-const CHAVE = 'consumed.consultas';
+/* Agendamentos: escolha de profissional, dia e horário. Dados e regras ficam no backend (consumed.py). */
 const el = (id) => document.getElementById(id);
-const estado = { slug: '', data: '', hora: '' };
-
+const estado = { slug: '', data: '', hora: '', ocupados: {}, texto: '', usuario: { logado: false } };
+ 
 const profissional = () => PROFISSIONAIS.find((p) => p.slug === estado.slug);
 const iso = (d) =>
     [d.getFullYear(), String(d.getMonth() + 1).padStart(2, '0'), String(d.getDate()).padStart(2, '0')].join('-');
 const porExtenso = (dia) =>
     new Date(dia + 'T00:00').toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
-
+ 
+/* Filtros vindos da index: ?profissional=medico|psicologo&atendimento=online|presencial */
+const parametros = new URLSearchParams(location.search);
+const filtroTipo = { medico: 'm', psicologo: 'p' }[parametros.get('profissional')] || '';
+const filtroAtend = ['online', 'presencial'].includes(parametros.get('atendimento'))
+    ? parametros.get('atendimento')
+    : '';
+const visiveis = () =>
+    PROFISSIONAIS.filter(
+        (p) =>
+            (!filtroTipo || p.tipo === filtroTipo) &&
+            (!filtroAtend || p.atendimento.includes(filtroAtend)) &&
+            normalizar(`${p.nome} ${p.especialidade}`).includes(normalizar(estado.texto)),
+    );
+ 
 /* Próximos 7 dias em que o profissional atende */
 function proximosDias(p) {
     const hoje = new Date();
@@ -21,50 +32,42 @@ function proximosDias(p) {
     }
     return dias;
 }
-
-/* Verifica se horário está indisponível */
-async function indisponivel(p, dia, hora) {
-    // Se passou
-    if (new Date(`${dia}T${hora}`) <= new Date()) return true;
-    
-    // Verifica se está agendado (consultando backend)
-    try {
-        const response = await fetch(`/api/horarios-ocupados/${p.slug}/${dia}`);
-        const ocupados = await response.json();
-        return ocupados.includes(hora);
-    } catch {
-        return false;
-    }
+ 
+const indisponivel = (dia, hora) =>
+    new Date(`${dia}T${hora}`) <= new Date() || (estado.ocupados[dia] || []).includes(hora);
+ 
+function mostrar(texto, tipo) {
+    el('msg').textContent = texto;
+    el('msg').className = 'aviso ' + tipo;
 }
-
-/* Filtros vindos da index */
-const parametros = new URLSearchParams(location.search);
-const filtroTipo = { medico: 'm', psicologo: 'p' }[parametros.get('profissional')] || '';
-const filtroAtend = ['online', 'presencial'].includes(parametros.get('atendimento'))
-    ? parametros.get('atendimento')
-    : '';
-const visiveis = () =>
-    PROFISSIONAIS.filter(
-        (p) => (!filtroTipo || p.tipo === filtroTipo) && (!filtroAtend || p.atendimento.includes(filtroAtend)),
-    );
-
+ 
 function desenharAviso() {
     if (!filtroTipo && !filtroAtend) return;
     const partes = [{ m: 'médicos', p: 'psicólogos' }[filtroTipo], filtroAtend].filter(Boolean);
     el('filtro-aviso').innerHTML = `Mostrando só: ${partes.join(', ')}. <a href="agendamento.html">Ver todos</a>`;
     el('filtro-aviso').hidden = false;
 }
-
-function desenharProfissionais() {
-    el('profissionais-lista').innerHTML = visiveis()
-        .map(
-            (p) => `<button type="button" class="escolha ${p.tipo}" data-slug="${p.slug}" aria-pressed="${p.slug === estado.slug}">
-            <b>${p.nome}</b><small>${p.especialidade}</small><small>R$ ${p.preco}</small>
-        </button>`,
-        )
-        .join('');
+ 
+function desenharSugestoes() {
+    const opcoes = new Set(PROFISSIONAIS.flatMap((p) => [p.nome, p.especialidade]));
+    el('sugestoes-prof').innerHTML = [...opcoes].map((o) => `<option value="${esc(o)}"></option>`).join('');
 }
-
+ 
+function desenharProfissionais() {
+    const lista = visiveis();
+    el('profissionais-lista').innerHTML = lista.length
+        ? lista
+              .map(
+                  (
+                      p,
+                  ) => `<button type="button" class="escolha ${p.tipo}" data-slug="${p.slug}" aria-pressed="${p.slug === estado.slug}">
+                      <b>${esc(p.nome)}</b><small>${esc(p.especialidade)}</small><small>R$ ${p.preco}</small>
+                  </button>`,
+              )
+              .join('')
+        : '<p class="dica">Nenhum profissional encontrado. Tente outro nome ou especialidade.</p>';
+}
+ 
 function desenharDias() {
     const p = profissional();
     el('dias').innerHTML = p
@@ -81,8 +84,8 @@ function desenharDias() {
         : '';
     el('dica-dia').textContent = p ? '' : 'Escolha um profissional primeiro.';
 }
-
-async function desenharHoras() {
+ 
+function desenharHoras() {
     const p = profissional();
     const caixa = el('horas');
     if (!p || !estado.data) {
@@ -90,80 +93,87 @@ async function desenharHoras() {
         el('dica-hora').textContent = p ? 'Escolha um dia.' : '';
         return;
     }
-    
-    let html = '';
-    for (const h of p.horarios) {
-        const indispo = await indisponivel(p, estado.data, h);
-        html += `<button type="button" class="hora" data-hora="${h}" aria-pressed="${h === estado.hora}" ${
-            indispo ? 'disabled' : ''
-        }>${h}</button>`;
-    }
-    
-    caixa.innerHTML = html;
+    caixa.innerHTML = p.horarios
+        .map(
+            (h) =>
+                `<button type="button" class="hora" data-hora="${h}" aria-pressed="${h === estado.hora}" ${
+                    indisponivel(estado.data, h) ? 'disabled' : ''
+                }>${h}</button>`,
+        )
+        .join('');
     el('dica-hora').textContent = caixa.querySelector('.hora:not(:disabled)')
         ? 'Horários riscados já estão ocupados.'
         : 'Sem horários livres neste dia. Tente outro dia.';
 }
-
+ 
 function desenharAtendimento() {
     const p = profissional();
     el('atend').innerHTML = p
         ? p.atendimento.map((a) => `<option value="${a}">${ROTULOS_ATENDIMENTO[a]}</option>`).join('')
         : '<option value="">Escolha um profissional</option>';
 }
-
+ 
 function desenharResumo() {
     const p = profissional();
     el('r-prof').textContent = p ? `${p.nome}, ${p.especialidade}` : 'Escolha um profissional';
     el('r-dia').textContent = estado.data ? porExtenso(estado.data) : 'Escolha um dia';
     el('r-hora').textContent = estado.hora || 'Escolha um horário';
 }
-
+ 
+function desenharConta() {
+    const u = estado.usuario;
+    const paciente = u.logado && u.papel === 'paciente';
+    el('form').hidden = !paciente;
+    el('aviso-login').hidden = paciente;
+    el('aviso-login').innerHTML = u.logado
+        ? 'Contas de profissional não agendam consultas. Use o <a href="painel.html">painel</a>.'
+        : 'Para confirmar, <a href="login.html?next=agendamento.html">entre ou crie uma conta</a>.';
+}
+ 
 async function desenharMinhas() {
-    try {
-        const response = await fetch('/api/consultas');
-        const consultas = await response.json();
-        const ordenadas = consultas.sort((a, b) => (a.data + a.hora).localeCompare(b.data + b.hora));
-        
-        el('sem-consultas').hidden = ordenadas.length > 0;
-        el('minhas').innerHTML = ordenadas
-            .map((c) => {
-                const p = PROFISSIONAIS.find((x) => x.slug === c.slug);
-                return `<li class="consulta">
-                    <div>
-                        <strong>${esc(p ? p.nome : c.slug)}</strong>
-                        <span>${porExtenso(c.data)}, ${esc(c.hora)} (${esc(ROTULOS_ATENDIMENTO[c.atendimento] || '')}). Código ${esc(c.id)}</span>
-                    </div>
-                    <button class="btn ghost" type="button" data-cancelar="${esc(c.id)}">Cancelar</button>
-                </li>`;
-            })
-            .join('');
-    } catch (erro) {
-        console.error('Erro ao carregar consultas:', erro);
-    }
+    const secao = el('secao-minhas');
+    secao.hidden = !(estado.usuario.logado && estado.usuario.papel === 'paciente');
+    if (secao.hidden) return;
+    const consultas = await api('/api/consultas').catch(() => []);
+    el('sem-consultas').hidden = consultas.length > 0;
+    el('minhas').innerHTML = consultas
+        .map((c) => {
+            const p = PROFISSIONAIS.find((x) => x.slug === c.slug);
+            return `<li class="consulta">
+                <div>
+                    <strong>${esc(p ? p.nome : c.slug)}</strong>
+                    <span>${porExtenso(c.data)}, ${esc(c.hora)} (${esc(ROTULOS_ATENDIMENTO[c.atendimento] || '')}). Código ${esc(c.id)}</span>
+                </div>
+                <button class="btn ghost" type="button" data-cancelar="${esc(c.id)}">Cancelar</button>
+            </li>`;
+        })
+        .join('');
 }
-
-function mostrar(texto, tipo) {
-    const msg = el('msg');
-    msg.textContent = texto;
-    msg.className = 'aviso ' + tipo;
+ 
+async function carregarOcupados() {
+    estado.ocupados = estado.slug ? await api(`/api/ocupados/${estado.slug}`).catch(() => ({})) : {};
 }
-
-function escolherProfissional(slug) {
+ 
+async function escolherProfissional(slug) {
     Object.assign(estado, { slug, data: '', hora: '' });
+    await carregarOcupados();
     desenharProfissionais();
     desenharDias();
     desenharHoras();
     desenharAtendimento();
     desenharResumo();
 }
-
-// Event listeners
+ 
+el('busca-prof').addEventListener('input', (e) => {
+    estado.texto = e.target.value;
+    desenharProfissionais();
+});
+ 
 el('profissionais-lista').addEventListener('click', (e) => {
     const b = e.target.closest('[data-slug]');
     if (b) escolherProfissional(b.dataset.slug);
 });
-
+ 
 el('dias').addEventListener('click', (e) => {
     const b = e.target.closest('[data-dia]');
     if (!b) return;
@@ -172,7 +182,7 @@ el('dias').addEventListener('click', (e) => {
     desenharHoras();
     desenharResumo();
 });
-
+ 
 el('horas').addEventListener('click', (e) => {
     const b = e.target.closest('[data-hora]');
     if (!b || b.disabled) return;
@@ -180,92 +190,54 @@ el('horas').addEventListener('click', (e) => {
     desenharHoras();
     desenharResumo();
 });
-
+ 
 el('form').addEventListener('submit', async (e) => {
     e.preventDefault();
-    const p = profissional();
-    if (!p || !estado.data || !estado.hora) {
+    if (!profissional() || !estado.data || !estado.hora) {
         mostrar('Escolha o profissional, o dia e o horário.', 'erro');
         return;
     }
-    if (!e.target.reportValidity()) return;
-    
-    if (await indisponivel(p, estado.data, estado.hora)) {
-        mostrar('Esse horário acabou de ser ocupado. Escolha outro.', 'erro');
-        await desenharHoras();
-        return;
-    }
-    
-    const consulta = {
-        id: 'CM-' + Math.random().toString(36).slice(2, 7).toUpperCase(),
-        slug: p.slug,
-        data: estado.data,
-        hora: estado.hora,
-        atendimento: el('atend').value,
-        paciente: el('nome').value.trim(),
-        email: el('email').value.trim(),
-    };
-    
     try {
-        const response = await fetch('/api/salvar-consulta', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(consulta)
+        const r = await api('/api/consultas', 'POST', {
+            slug: estado.slug,
+            data: estado.data,
+            hora: estado.hora,
+            atendimento: el('atend').value,
         });
-        
-        if (!response.ok) {
-            const erro = await response.json();
-            mostrar(erro.erro || 'Erro ao salvar', 'erro');
-            await desenharHoras();
-            return;
-        }
-        
-        mostrar(`Consulta confirmada para ${porExtenso(consulta.data)}, às ${consulta.hora}. Código ${consulta.id}.`, 'ok');
+        mostrar(`Consulta confirmada para ${porExtenso(estado.data)}, às ${estado.hora}. Código ${r.id}.`, 'ok');
         estado.hora = '';
-        await desenharHoras();
-        desenharResumo();
-        await desenharMinhas();
     } catch (erro) {
-        mostrar('Erro de conexão ao salvar', 'erro');
+        mostrar(erro.message, 'erro');
     }
+    await carregarOcupados();
+    desenharHoras();
+    desenharResumo();
+    desenharMinhas();
 });
-
+ 
 el('minhas').addEventListener('click', async (e) => {
     const b = e.target.closest('[data-cancelar]');
     if (!b) return;
-    
-    try {
-        const response = await fetch(`/api/cancelar-consulta/${b.dataset.cancelar}`, {
-            method: 'DELETE'
-        });
-        
-        if (response.ok) {
-            await desenharHoras();
-            await desenharMinhas();
-        }
-    } catch (erro) {
-        console.error('Erro ao cancelar:', erro);
-    }
+    await api(`/api/consultas/${b.dataset.cancelar}`, 'DELETE').catch((erro) => mostrar(erro.message, 'erro'));
+    await carregarOcupados();
+    desenharHoras();
+    desenharMinhas();
 });
-
-// ========== INICIALIZAÇÃO ==========
-// Carregar profissionais do backend e inicializar
-fetch('/api/profissionais')
-    .then(r => r.json())
-    .then(dados => {
-        window.PROFISSIONAIS = dados;
-        
-        // Agora inicializa a página
-        const inicial = new URLSearchParams(location.search).get('profissional');
-        desenharAviso();
-        desenharProfissionais();
-        desenharDias();
-        desenharHoras();
-        desenharAtendimento();
-        desenharResumo();
-        desenharMinhas();
-        if (PROFISSIONAIS.some((p) => p.slug === inicial)) escolherProfissional(inicial);
-    })
-    .catch(err => {
-        console.error('Erro ao carregar profissionais:', err);
-    });
+ 
+async function iniciar() {
+    [estado.usuario] = await Promise.all([sessao, carregarProfissionais()]);
+    desenharAviso();
+    desenharSugestoes();
+    desenharProfissionais();
+    desenharDias();
+    desenharHoras();
+    desenharAtendimento();
+    desenharResumo();
+    desenharConta();
+    desenharMinhas();
+    const inicial = parametros.get('profissional');
+    if (PROFISSIONAIS.some((p) => p.slug === inicial)) escolherProfissional(inicial);
+}
+ 
+iniciar();
+ 

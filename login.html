@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+        <meta name="description" content="Entre ou crie sua conta para agendar consultas, ou acesse o painel de profissional." />
+        <title>Entrar | ConsuMed</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="style.css">
+    </head>
+ 
+    <body>
+        <header class="top" id="hd">
+            <div class="in">
+                <a class="logo" href="index.html">
+                    <img src="imagens/logo_nome.png" alt="ConsuMed, página inicial" />
+                </a>
+                <nav aria-label="Principal" id="menu">
+                    <a class="l" href="index.html#inicio">Início</a>
+                    <a class="l" href="agendamento.html">Agendamentos</a>
+                    <a class="l" href="especialidades.html">Especialidades</a>
+                    <a class="l" href="index.html#servicos">Serviços</a>
+                    <a class="l" href="index.html#profissionais">Profissionais</a>
+                    <a class="l" href="index.html#contato">Contato</a>
+                    <a class="user" href="login.html" aria-label="Entrar na sua conta">
+                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="12" cy="8" r="4" />
+                            <path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8" />
+                        </svg>
+                    </a>
+                </nav>
+                <button class="burger" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu">
+                    <span></span>
+                </button>
+            </div>
+        </header>
+ 
+        <main>
+            <section class="pagina" aria-labelledby="t-login">
+                <div class="wrap login">
+                    <h1 id="t-login">Entrar</h1>
+                    <p class="sub">Pacientes agendam e acompanham consultas. Profissionais gerenciam a própria agenda.</p>
+                    <div class="form login-caixa">
+                        <div class="tabs" role="group" aria-label="Entrar ou criar conta">
+                            <button type="button" class="tab" data-form="entrar" aria-pressed="true">Entrar</button>
+                            <button type="button" class="tab" data-form="cadastro" aria-pressed="false">Criar conta de paciente</button>
+                        </div>
+                        <form id="form-entrar" class="campos">
+                            <label for="e-email">E-mail<input id="e-email" type="email" autocomplete="email" required /></label>
+                            <label for="e-senha">Senha<input id="e-senha" type="password" autocomplete="current-password" required /></label>
+                            <button class="btn" type="submit">Entrar</button>
+                        </form>
+                        <form id="form-cadastro" class="campos" hidden>
+                            <label for="c-nome">Nome<input id="c-nome" type="text" autocomplete="name" minlength="2" maxlength="80" required /></label>
+                            <label for="c-email">E-mail<input id="c-email" type="email" autocomplete="email" required /></label>
+                            <label for="c-senha">Senha (mínimo de 8 caracteres)<input id="c-senha" type="password" autocomplete="new-password" minlength="8" required /></label>
+                            <button class="btn" type="submit">Criar conta</button>
+                        </form>
+                        <p class="aviso" id="msg" role="status"></p>
+                        <p class="nota">Você é profissional de saúde? Entre com o e-mail e a senha fornecidos pela equipe do ConsuMed. Contas de profissional não são criadas por aqui.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+ 
+        <footer>
+            <div class="in">
+                <span>ConsuMed é um projeto acadêmico alinhado à ODS 3, Saúde e Bem-estar.</span>
+                <span>Todos os profissionais e dados desta página são fictícios.</span>
+            </div>
+        </footer>
+ 
+        <script src="dados.js" defer></script>
+        <script src="script.js" defer></script>
+        <script src="login.js" defer></script>
+    </body>
+</html>
+ 

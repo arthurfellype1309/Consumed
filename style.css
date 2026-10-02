@@ -274,7 +274,7 @@ nav a.l:hover {
     padding: 10px;
     background: rgba(255, 255, 255, 0.7);
     border: 1px solid var(--line);
-    border-radius: 999px 999px 32px 32px;
+    border-radius: 32px;
     box-shadow: 0 30px 60px -30px rgba(18, 35, 58, 0.5);
 }
 .moldura::before {
@@ -291,7 +291,7 @@ nav a.l:hover {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    border-radius: 999px 999px 22px 22px;
+    border-radius: 22px;
     background: linear-gradient(160deg, var(--mint), var(--sky));
 }
 .foto::after {
@@ -305,7 +305,7 @@ nav a.l:hover {
     color: var(--muted);
     font: 500 0.95rem var(--sans);
     border: 2px dashed rgba(35, 72, 107, 0.3);
-    border-radius: 999px 999px 14px 14px;
+    border-radius: 14px;
 }
 .foto img {
     position: absolute;
@@ -1139,5 +1139,84 @@ nav a.l[aria-current='page'] {
 .pro .local {
     color: var(--muted);
     font-size: 0.92rem;
+}
+ 
+/* ===== Conta, painel e busca ===== */
+nav button.sair {
+    background: none;
+    border: 0;
+    color: inherit;
+    font: inherit;
+    font-weight: 500;
+    cursor: pointer;
+}
+nav button.sair:hover {
+    text-decoration: underline;
+    text-underline-offset: 6px;
+}
+.login {
+    max-width: 560px;
+}
+.login-caixa {
+    margin-top: 32px;
+}
+.login-caixa .tabs {
+    margin-top: 0;
+}
+.campos {
+    display: grid;
+    gap: 14px;
+}
+.campos .btn {
+    justify-self: start;
+}
+.busca {
+    margin-top: 18px;
+}
+.busca input {
+    border-color: var(--line);
+}
+.dias-semana-caixa {
+    margin: 0 0 22px;
+    padding: 0;
+    border: 0;
+}
+.dias-semana-caixa legend {
+    margin-bottom: 10px;
+    font-size: 0.82rem;
+    color: var(--muted);
+}
+.dias-semana {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.check {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border: 2px solid var(--line);
+    border-radius: 999px;
+    font-weight: 500;
+    cursor: pointer;
+}
+.check input {
+    width: auto;
+    min-height: 0;
+    accent-color: var(--blue);
+}
+.novo-horario {
+    display: flex;
+    gap: 10px;
+    margin-top: 14px;
+}
+.novo-horario input {
+    border-color: var(--line);
+}
+.pro.destaque {
+    box-shadow:
+        0 0 0 3px var(--amber),
+        0 20px 40px -24px rgba(18, 35, 58, 0.25);
 }
  

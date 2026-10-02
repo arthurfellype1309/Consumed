@@ -27,7 +27,7 @@
                     <a class="l" href="index.html#servicos">Serviços</a>
                     <a class="l" href="index.html#profissionais">Profissionais</a>
                     <a class="l" href="index.html#contato">Contato</a>
-                    <a class="user" href="#" aria-label="Entrar na sua conta">
+                    <a class="user" href="login.html" aria-label="Entrar na sua conta">
                         <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                             <circle cx="12" cy="8" r="4" />
                             <path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8" />
@@ -51,6 +51,11 @@
                             <section class="passo" aria-labelledby="p1">
                                 <h2 id="p1"><span>1</span>Profissional</h2>
                                 <p class="dica" id="filtro-aviso" hidden></p>
+                                <label for="busca-prof" class="busca">
+                                    Buscar profissional
+                                    <input id="busca-prof" type="search" list="sugestoes-prof" placeholder="Nome ou especialidade" autocomplete="off" />
+                                </label>
+                                <datalist id="sugestoes-prof"></datalist>
                                 <div class="escolhas" id="profissionais-lista"></div>
                             </section>
                             <section class="passo" aria-labelledby="p2">
@@ -80,25 +85,28 @@
                                     Atendimento
                                     <select id="atend"></select>
                                 </label>
-                                <label for="nome">
-                                    Seu nome
-                                    <input id="nome" name="nome" type="text" autocomplete="name" required />
-                                </label>
-                                <label for="email">
-                                    E-mail
-                                    <input id="email" name="email" type="email" autocomplete="email" required />
-                                </label>
                                 <button class="btn" type="submit">Confirmar agendamento</button>
                             </form>
                             <p class="aviso" id="msg" role="status"></p>
-                            <p class="nota">Protótipo: as consultas ficam salvas apenas neste navegador.</p>
+                            <p class="dica" id="aviso-login" hidden></p>
+                            <p class="nota">Suas consultas ficam salvas na sua conta.</p>
                         </aside>
                     </div>
  
-                    <section class="minhas" aria-labelledby="t-minhas">
+                    <section class="minhas" id="secao-minhas" aria-labelledby="t-minhas" hidden>
                         <h2 id="t-minhas">Minhas consultas</h2>
                         <ul class="consultas" id="minhas"></ul>
                         <p class="dica" id="sem-consultas">Você ainda não tem consultas agendadas.</p>
+                    </section>
+ 
+                    <section class="minhas" aria-labelledby="t-antes">
+                        <h2 id="t-antes">Antes da consulta</h2>
+                        <div class="info-grid">
+                            <article class="tile"><h3>Leve seus documentos</h3><p>Documento com foto e, se tiver, cartão do SUS ou do plano de saúde.</p></article>
+                            <article class="tile"><h3>Reúna o histórico</h3><p>Exames anteriores, receitas e a lista dos medicamentos que você usa, com as doses.</p></article>
+                            <article class="tile"><h3>Anote suas dúvidas</h3><p>Escreva sintomas, desde quando aparecem e o que melhora ou piora. Isso ajuda a consulta a render.</p></article>
+                            <article class="tile"><h3>Consulta online</h3><p>Teste câmera, microfone e internet antes e escolha um lugar silencioso e reservado.</p></article>
+                        </div>
                     </section>
  
                     <div class="crisis" role="note">
