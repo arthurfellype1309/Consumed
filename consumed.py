@@ -4,7 +4,7 @@ import os
 from datetime import datetime
 
 app = Flask(__name__, static_folder='.', static_url_path='')
-DB_FILE = 'agendamentos.db'
+DB_FILE = 'agendamento.db'
 
 # 🗄️ Cria banco
 def init_db():
