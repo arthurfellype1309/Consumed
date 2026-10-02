@@ -6,7 +6,7 @@ O **ConsuMed** é uma plataforma de saúde que conecta pacientes e profissionais
 
 Projeto acadêmico alinhado ao **ODS 3, Saúde e Bem-estar**.
 
-> **Status:** protótipo funcional de front-end. Os profissionais e consultórios são fictícios e as consultas ficam salvas apenas no navegador. O back-end em Python está previsto (veja a [seção 8](#8-diferencial-impacto-e-próximos-passos)).
+> **Status:** protótipo funcional com front-end e back-end. O servidor em Python (Flask + SQLite) cuida de contas, login, profissionais, agenda e consultas. Os profissionais e consultórios são fictícios (veja as [limitações](#limitações-do-protótipo) e os [próximos passos](#8-diferencial-impacto-e-próximos-passos)).
 
 ## Sumário
 
@@ -95,7 +95,7 @@ O problema tem várias causas: falta de vagas e de especialistas em certas regi�
 
 ## 2. A solução
 
-O ConsuMed funciona como uma ponte entre pacientes e profissionais de saúde. O site tem três páginas principais.
+O ConsuMed funciona como uma ponte entre pacientes e profissionais de saúde. O site tem três páginas principais, abertas a todos (início, agendamentos e especialidades), e duas páginas de conta (login e painel do profissional). Os dados e as regras ficam no back-end (`consumed.py`); o navegador só exibe e envia pedidos à API.
 
 ### Início (`index.html`)
 
@@ -107,17 +107,46 @@ O ConsuMed funciona como uma ponte entre pacientes e profissionais de saúde. O 
 ### Agendamentos (`agendamento.html`)
 
 - Escolha em três passos: profissional, dia e horário
-- Dias de atendimento do profissional nos próximos 7 dias, com horários já ocupados bloqueados
-- Confirmação com nome, e-mail e tipo de atendimento (online ou presencial), gerando um código de consulta (formato `CM-XXXXX`)
-- Lista "Minhas consultas", com opção de cancelar
-- Filtros recebidos pela busca da página inicial (por exemplo, `?profissional=medico&atendimento=online`)
+- Busca por nome ou especialidade, com sugestões de preenchimento automático
+- Dias de atendimento do profissional nos próximos 7 dias em que ele atende, com horários já ocupados (ou já passados) bloqueados e riscados
+- Resumo lateral com a escolha feita e seletor de atendimento (online ou presencial, conforme o que o profissional oferece)
+- Para confirmar, é preciso estar logado como **paciente**. Sem login, a página mostra um link para entrar ou criar conta; contas de profissional são direcionadas ao painel
+- A consulta usa o nome e o e-mail da conta e gera um código no formato `CM-XXXXXX` (seis caracteres hexadecimais)
+- Só é possível agendar horários futuros, dentro dos próximos 30 dias
+- Se dois pacientes escolherem o mesmo horário ao mesmo tempo, o banco recusa o segundo e a página avisa para escolher outro
+- Lista "Minhas consultas", com opção de cancelar, visível apenas para pacientes logados
+- Filtros recebidos pela busca da página inicial: `?profissional=medico|psicologo` e `?atendimento=online|presencial`, com aviso "Mostrando só..." e link para ver todos. Também é aceito o `slug` de um profissional (por exemplo, `?profissional=helena-duarte`), que já o deixa selecionado
+- Dicas de preparação ("Antes da consulta") e aviso de crise (188) e emergência (192)
+
+### Entrar (`login.html`)
+
+- Duas abas: **Entrar** (e-mail e senha) e **Criar conta de paciente** (nome, e-mail e senha com no mínimo 8 caracteres)
+- Pacientes se cadastram sozinhos. **Profissionais não se cadastram pelo site**: usam a conta fornecida pela equipe do ConsuMed
+- Depois do login, o paciente volta para a página de origem (parâmetro `?next=`, aceito apenas para páginas `.html` do próprio site) e o profissional vai para o painel
+- Quem já está logado é redirecionado automaticamente
+- Depois de entrar, o menu mostra o nome da conta no ícone de usuário, o botão **Sair** e, para profissionais, o link **Painel**
+
+### Painel do profissional (`painel.html`)
+
+- Disponível apenas para contas de profissional; sem login, redireciona para `login.html?next=painel.html`
+- **Próximas consultas** do profissional, com nome e e-mail do paciente, data, horário, tipo de atendimento e código, com opção de cancelar (pede confirmação)
+- **Minha agenda:** o profissional escolhe os dias da semana de atendimento (caixas de seleção) e adiciona ou remove horários (campo de hora e botão "Adicionar"; clique no horário para remover)
+- Exige ao menos um dia e um horário (formato `HH:MM`, no máximo 24 horários)
+- Consultas já marcadas **não são apagadas** ao mudar a agenda; se alguma ficar fora da nova agenda, o painel mostra quantas
 
 ### Especialidades (`especialidades.html`)
 
 - Explicação de cada especialidade e de quando procurá-la
-- **Serviços de saúde perto de você:** a partir da localização do usuário (ou de uma cidade ou bairro digitado), lista serviços de cinco categorias (urgência e emergência, UBS e postos, CAPS, hospitais, clínicas e consultórios), do mais perto ao mais longe, com selo de rede pública (SUS), telefone e rota
-- Profissionais ordenados pela proximidade do consultório
+- **Serviços de saúde perto de você:** a partir da localização do usuário (ou de uma cidade ou bairro digitado), lista serviços de cinco categorias (urgência e emergência, UBS e postos, CAPS, hospitais, clínicas e consultórios), do mais perto ao mais longe, com selo de rede pública (SUS), telefone ("Ligar") e rota ("Como chegar", no Google Maps)
+  - Busca em um raio de **8 km**, com até **8 resultados** por categoria
+  - Cada lugar é classificado pelo nome e pelas etiquetas do OpenStreetMap (por exemplo, "CAPS", "UPA", "UBS", "pronto-socorro"); o selo "Rede pública (SUS)" aparece quando o operador é público ou o nome indica serviço público
+  - Cada categoria tem um texto de ajuda explicando para que serve (por exemplo, a UBS como porta de entrada do SUS) e um link para buscar a mesma categoria no Google Maps
+  - O campo de cidade ou bairro tem **preenchimento automático** (sugestões vindas do back-end); se o texto não for uma sugestão, a página usa o Nominatim para localizar o endereço
+  - Mensagens de estado para cada situação: aguardando permissão, buscando, erro de consulta e nenhum resultado (os dados do OpenStreetMap podem estar incompletos)
+- **Filtro por especialidade ou abordagem:** 20 especialidades médicas (de clínica geral a alergia e imunologia) e 12 abordagens de psicologia (TCC, psicanálise, Gestalt, ACT, EMDR, entre outras). Ao escolher uma, os lugares passam a ser filtrados pelo nome ou pela etiqueta de especialidade do OpenStreetMap, e os profissionais que a atendem ganham destaque
+- Profissionais ordenados primeiro pela especialidade escolhida e depois pela proximidade do consultório; quem atende só online aparece por último. Se os consultórios de exemplo estiverem a mais de 50 km, a página avisa que o atendimento online continua disponível
 - Explicação dos termos usados nos perfis: online, presencial, valor social, Libras, local acessível e horário à noite
+- Cartões de **prevenção** (vacinas, alimentação, atividade física, sono, dengue, sol, tabaco e álcool, saúde mental e consultas de rotina)
 - Avisos de segurança em destaque: **192 (SAMU)** para risco de vida e **188 (CVV)** para crise emocional
 
 ### Profissionais de exemplo (dados fictícios)
@@ -137,12 +166,17 @@ O ConsuMed funciona como uma ponte entre pacientes e profissionais de saúde. O 
 - Textos inseridos dinamicamente na página passam por uma função de escape (`esc()`), que reduz o risco de injeção de HTML
 - A localização do usuário fica no navegador e é enviada apenas ao OpenStreetMap para buscar os lugares próximos; o projeto não a armazena
 - Avisos de emergência visíveis nas páginas de agendamento e de especialidades
+- Senhas guardadas apenas como hash; sessão em cookie `HttpOnly` e `SameSite=Lax`, com chave secreta própria
+- Bloqueio de 5 minutos após 5 tentativas de login erradas (por IP e e-mail)
+- O servidor valida tudo de novo (datas, horários, modalidade, permissões) e só entrega arquivos de tipos permitidos (`.css`, `.js`, imagens), nunca `.py`, `.db` ou arquivos ocultos
+- Pacientes só veem e cancelam as próprias consultas; profissionais, apenas as da sua agenda
 
 ### Limitações do protótipo
 
-- Não há back-end: o arquivo `consumed.py` ainda está vazio e as consultas ficam apenas no `localStorage` do navegador
-- A ocupação dos horários é **simulada** (calculada a partir do profissional, do dia e da hora), e não vem de uma agenda real
-- Profissionais e consultórios são fictícios; não há integração com o SUS nem com operadoras de planos de saúde
+- Profissionais, consultórios e contas de exemplo são fictícios; não há integração com o SUS nem com operadoras de planos de saúde
+- Na página inicial, os horários "Próximo horário" e os **Filtros de acesso** (valor social, Libras etc.) são apenas ilustrativos; o formulário de contato ainda não envia mensagens
+- Não há lembretes nem confirmação de presença, e o cancelamento não avisa a outra parte
+- O limite de tentativas de login fica na memória do servidor e é zerado ao reiniciá-lo
 - Os dados do OpenStreetMap podem estar incompletos ou desatualizados, e a página avisa o usuário para confirmar horário e telefone
 
 ## 3. Objetivo de Desenvolvimento Sustentável (ODS)
@@ -166,16 +200,17 @@ O ConsuMed usa tecnologia para reduzir as barreiras de acesso à saúde descrita
 |---|---|
 | Front-end | HTML5, CSS3 e JavaScript (sem frameworks) |
 | Visual | Fontes Inter e Newsreader (Google Fonts); fundo animado com WebGL e efeito parallax |
-| Armazenamento (protótipo) | `localStorage` do navegador |
-| Mapas e localização | API de geolocalização do navegador, Overpass API (busca de lugares) e Nominatim (busca de endereços), ambos do OpenStreetMap |
+| Back-end | Python 3 com Flask (API REST em JSON e entrega das páginas) |
+| Banco de dados | SQLite (`agendamento.db`), criado automaticamente |
+| Autenticação | Sessões do Flask e senhas com hash (Werkzeug) |
+| Mapas e localização | API de geolocalização do navegador, Overpass API (busca de lugares) e Nominatim (busca de endereços), ambos do OpenStreetMap, e Photon (sugestões de local, via back-end) |
 | Links externos | Google Maps, para busca e rotas |
-| Back-end | Python (planejado; `consumed.py` ainda vazio) |
 | Ferramentas | GitHub, [Trello / Notion / outra, se usarem] |
 | Licença | GNU GPL v3 |
 
 ## 5. Como executar o projeto
 
-O projeto é um site estático e não precisa de instalação.
+Requer **Python 3** e o Flask. O servidor entrega as páginas e a API, então abrir os `.html` direto no navegador não funciona (login e agendamento dependem da API).
 
 ```bash
 # 1. Clonar o repositório
@@ -184,17 +219,30 @@ git clone [URL-DO-REPOSITORIO]
 # 2. Entrar na pasta do projeto
 cd [consumed]
 
-# 3. Iniciar um servidor local (recomendado)
-python -m http.server 8000
+# 3. Instalar a dependência
+pip install flask
+
+# 4. Iniciar o servidor
+python consumed.py
 ```
 
-Depois, abra `http://localhost:8000` no navegador.
+Depois, abra `http://127.0.0.1:5000` no navegador.
+
+Na primeira execução, o servidor cria sozinho o banco `agendamento.db`, a chave de sessão `.chave_secreta` e os cinco profissionais de exemplo. Cada um entra com `<slug>@consumed.example` (por exemplo, `helena-duarte@consumed.example`) e a senha de demonstração definida em `consumed.py`. Pacientes criam a conta pela página de login.
+
+Variáveis de ambiente opcionais:
+
+| Variável | Para que serve |
+|---|---|
+| `CONSUMED_SECRET` | Chave das sessões (se ausente, usa o arquivo `.chave_secreta`) |
+| `CONSUMED_SENHA_DEMO` | Senha dos profissionais de exemplo (use outra fora de testes) |
+| `CONSUMED_DEBUG=1` | Modo de desenvolvimento do Flask |
 
 Observações:
 
-- É possível abrir o `index.html` direto no navegador, mas a **geolocalização** só funciona em `localhost` ou `https`.
-- A busca de serviços de saúde próximos precisa de internet (OpenStreetMap).
-- O site espera a pasta `imagens/` (com `logo.png`) ao lado dos arquivos HTML. Inclua-a no repositório.
+- A busca de serviços de saúde próximos e as sugestões de local precisam de internet. A **geolocalização** do navegador só funciona em `localhost` ou `https`.
+- O site espera a pasta `imagens/` (com `logo_nome.png` e `saude_bemestar.png`) ao lado dos arquivos HTML. Inclua-a no repositório.
+- **Não publique** `.chave_secreta` nem `agendamento.db` no repositório: adicione ambos ao `.gitignore`.
 
 ### Estrutura de arquivos
 
@@ -202,22 +250,45 @@ Observações:
 index.html            Página inicial
 agendamento.html      Agendamento de consultas
 especialidades.html   Especialidades e rede de saúde
+login.html            Entrar e criar conta de paciente
+painel.html           Painel do profissional
 style.css             Estilos
-script.js             Comportamentos comuns (menu, abas, triagem, fundo animado)
+script.js             Comportamentos comuns (menu, abas, triagem, fundo animado, sessão e botão Sair)
+dados.js              Funções compartilhadas (chamadas à API, escape de texto, cartão de profissional)
 agendamento.js        Lógica do agendamento
-especialidades.js     Lógica de localização e serviços próximos
-dados.js              Dados fictícios dos profissionais
-consumed.py           Back-end em Python (a desenvolver)
+especialidades.js     Localização, serviços próximos e filtro por especialidade
+login.js              Login e cadastro
+painel.js             Consultas e agenda do profissional
+consumed.py           Back-end Flask + SQLite
+agendamento.db        Banco de dados (gerado automaticamente)
+.chave_secreta        Chave das sessões (gerada automaticamente; não versionar)
 LICENSE               GNU GPL v3
 ```
+
+### API (resumo)
+
+| Rota | Quem acessa | Função |
+|---|---|---|
+| `POST /api/cadastro`, `POST /api/login`, `POST /api/logout`, `GET /api/eu` | Todos | Conta e sessão |
+| `GET /api/profissionais` | Todos | Lista de profissionais |
+| `GET /api/ocupados/<slug>` | Todos | Horários ocupados de um profissional (sem dados pessoais) |
+| `GET /api/lugares?q=` | Todos | Sugestões de local para o preenchimento automático |
+| `GET`/`POST /api/consultas` | Paciente | Listar e agendar as próprias consultas |
+| `DELETE /api/consultas/<código>` | Paciente ou profissional dono | Cancelar consulta |
+| `GET /api/painel`, `PUT /api/painel/agenda` | Profissional | Consultas e edição de dias e horários |
+
+### Banco de dados
+
+Três tabelas: `usuarios` (paciente ou profissional), `profissionais` (dados e agenda em JSON) e `consultas`. A restrição `UNIQUE (slug, data, hora)` impede dois agendamentos no mesmo horário.
 
 ## 6. Equipe e divisão de tarefas
 
 | Integrante | Papel | Principais responsabilidades |
+|---|---|---|
+| Gabriel Santos / Yan Rafael | Front-end | Páginas, estilos, agendamento, especialidades e todos os arquivos JavaScript |
+| Arthur Sales | Documentação e pitch | README, pesquisa de dados, apresentação, criação de repositórios |
+| Erik Malta | Back-end | Gerenciar os agendamentos de forma centralizada e confiável |
 
-| Gabriel Santos/ Yan Rafael | front-end|  páginas, estilos, agendamento, especialidades e todas as pastas de java scripit |
-| Arthur Sales | Documentação e pitch|  README, pesquisa de dados, apresentação, criação de repositórios|
-| Erik Malta | Back-end | gerenciar os agendamentos de forma centralizada e confiável|
 ## 7. Evolução do projeto
 
 Registro das etapas de desenvolvimento, com datas e responsáveis reais.
@@ -236,9 +307,7 @@ Registro das etapas de desenvolvimento, com datas e responsáveis reais.
 - **Diferencial:** une, em um só lugar, triagem simples, agendamento e mapa de serviços de saúde próximos (inclusive da rede pública), com foco em acesso (valor social, Libras, local acessível, horário à noite) e avisos de emergência sempre visíveis.
 - **Impacto esperado:** [descreva, nas palavras da equipe, o que muda para o paciente e para o profissional]
 - **Próximos passos:**
-  - Back-end em Python com API (por exemplo, `GET /api/profissionais`) para substituir os dados fictícios de `dados.js`
-  - Salvar e cancelar consultas pela API, com o banco impedindo dois agendamentos no mesmo horário (restrição `UNIQUE` em profissional, data e hora)
-  - Cadastro e login de pacientes e profissionais
+  - Ligar os filtros de acesso e os horários da página inicial aos dados reais da API, e fazer o formulário de contato enviar mensagens
   - Lembretes de consulta e confirmação de presença, para reduzir faltas e liberar vagas ociosas
   - Integração com agendas reais de profissionais e, no futuro, com serviços da rede pública
   - Profissionais e consultórios reais
